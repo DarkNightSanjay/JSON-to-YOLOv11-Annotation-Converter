@@ -16,3 +16,71 @@ This Python script converts JSON-based bounding box annotations into the YOLOv11
 
 ## 📁 Directory Structure
 
+### dataset-conversion/ └── ann/ ├── all_class_titles.txt # Required class name-to-ID mapping ├── *.json # Your annotation files ├── Labels/ # Output YOLO labels (class IDs) └── Labels_WithNames/ # Output readable labels (class names)
+
+
+---
+
+## 🧾 Input: JSON Format
+
+Each `.json` file must include:
+
+```json
+{
+  "size": {
+    "width": 1280,
+    "height": 720
+  },
+  "objects": [
+    {
+      "classTitle": "car",
+      "points": {
+        "exterior": [[x1, y1], [x2, y2]]
+      }
+    }
+  ]
+}
+
+---
+
+- `classTitle`: the label/class of the object
+
+- `points.exterior`: two corner points of a bounding box
+
+# Input: Class Mapping (all_class_titles.txt)
+
+Must contain each class and its YOLO ID like so:
+
+car -> 0
+pedestrian -> 1
+truck -> 2
+...
+
+- Ensure the class names exactly match those in your JSON files
+
+- Any class not in this list will be skipped
+
+# How to Use
+
+- Place all your JSON files and `all_class_titles.txt` inside a folder (e.g. `D:/dataset-conversion/ann`)
+
+- Set the `folder_pat`h variable in the script to match your directory
+
+- Run the script:
+`python Jsonconvert_3.py`
+
+# Output
+
+For each .json file, the script generates:
+
+
+# Folder	                     Format	                            Use Case
+`Labels/`	           YOLOv11 format `(class_id x y w h)`	      ✅ Model training
+`Labels_WithNames/`	  Human-readable `(class_name x y w h)`	    🔍 Debugging & review
+
+ ## Notes
+- Class IDs are not auto-generated — they must be provided in all_class_titles.txt.
+
+- Coordinates are normalized (0 to 1 range) for YOLO compatibility.
+
+- The script automatically creates output folders if they don’t exist.
