@@ -39,7 +39,7 @@ Each `.json` file must include:
       }
     }
   ]
-}```
+}  ```
 
 ---
 
